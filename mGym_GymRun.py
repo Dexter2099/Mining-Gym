@@ -9,6 +9,7 @@ import os
 import csv
 import tensorboard
 import argparse
+from tqdm import tqdm
 from stable_baselines3 import PPO
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.vec_env import DummyVecEnv
@@ -59,7 +60,8 @@ class TrainingLoggerCallback(BaseCallback):
         log_file='training_log.txt',
         max_timesteps=10000000,
         max_episodes=2,
-        save_interval=10
+        save_interval=10,
+        progress_bar=None
     ):
         super().__init__(verbose)
         self.model = model
@@ -69,6 +71,7 @@ class TrainingLoggerCallback(BaseCallback):
         self.max_episodes = max_episodes
         self.save_interval = save_interval
         self.episode_count = 0
+        self.progress_bar = progress_bar
         
         # Initialize log file with full path
         self.log_file = os.path.join(save_dir, log_file)
@@ -92,6 +95,8 @@ class TrainingLoggerCallback(BaseCallback):
         # Check if episode ended
         if any(self.locals['dones']):
             self.episode_count += 1
+            if self.progress_bar is not None:
+                self.progress_bar.update(1)
             
             # Save model at specified frequency
             if self.episode_count % self.save_interval == 0:
@@ -183,26 +188,25 @@ def main(choice, num_episodes, model_path=None, config_file='config_extend.txt')
             _init_setup_model=True
         )
 
-        # Create callback with proper parameters
-        logger_callback = TrainingLoggerCallback(
-            model=model,  # Pass model directly as in original
-            save_dir =  MODEL_SAVE_DIR,
-            verbose=1,
-            max_episodes=num_episodes,
-            save_interval=100
-        )
+        with tqdm(total=num_episodes, desc="Training", unit="episode") as pbar:
+            logger_callback = TrainingLoggerCallback(
+                model=model,
+                save_dir=MODEL_SAVE_DIR,
+                verbose=1,
+                max_episodes=num_episodes,
+                save_interval=100,
+                progress_bar=pbar
+            )
 
-        try:
-            # Train the model
-            model.learn(total_timesteps=100000, callback=logger_callback, tb_log_name="run_02")
-            
-            # Save final model
-            final_model_path = os.path.join(MODEL_SAVE_DIR, "ppo_minegym_final.zip")
-            model.save(final_model_path)
-            
-        finally:
-            logger_callback.close()
-            env.close()
+            try:
+                model.learn(total_timesteps=100000, callback=logger_callback, tb_log_name="run_02")
+
+                final_model_path = os.path.join(MODEL_SAVE_DIR, "ppo_minegym_final.zip")
+                model.save(final_model_path)
+
+            finally:
+                logger_callback.close()
+                env.close()
 
     elif choice == 'play':
         try:
@@ -212,7 +216,7 @@ def main(choice, num_episodes, model_path=None, config_file='config_extend.txt')
             model = PPO.load(model_path, env=env)
 
             # Run the model for specified number of episodes
-            for episode in range(num_episodes):
+            for episode in tqdm(range(num_episodes), desc="Playing", unit="episode"):
                 epi_seed = gen_seed(episode)
                 obs, info = env.reset(seed=49)
                 done = False
