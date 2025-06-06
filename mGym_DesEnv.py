@@ -35,28 +35,38 @@ update_freq = 20 #10 units of time
 shift_start_time = 0
 all_trk_shv_dec = deque(maxlen=100)
 
-cfg_samp = ConfigSampler('config_extend.txt')#, cnfg_seed = cnfg_seed) #load from configuration file
+# Default configuration file path; can be overridden
+config_file_path = 'config_extend.txt'
 
-# Basic parameters loaded from config
-Num_trucks = cfg_samp.get_sampled_value('TR')
-Num_shovels = cfg_samp.get_sampled_value('SH')
-Num_crushers = cfg_samp.get_sampled_value('CR') 
-Num_dumps = cfg_samp.get_sampled_value('DS')
-Num_shifts = cfg_samp.get_sampled_value('SN')
-shift_dura = cfg_samp.get_sampled_value('Sdur')
-targ_pvol = cfg_samp.get_sampled_value('PVol_targ')
+def load_config(path: str):
+    """Load configuration values from the given file and update globals."""
+    global cfg_samp, Num_trucks, Num_shovels, Num_crushers, Num_dumps
+    global Num_shifts, shift_dura, targ_pvol, load_per_trip, choice, epsilon
+    global r_optimal
 
-load_per_trip = cfg_samp.get_sampled_value('LO') #only consider loaded truck
+    cfg_samp = ConfigSampler(path)
 
+    Num_trucks = cfg_samp.get_sampled_value('TR')
+    Num_shovels = cfg_samp.get_sampled_value('SH')
+    Num_crushers = cfg_samp.get_sampled_value('CR')
+    Num_dumps = cfg_samp.get_sampled_value('DS')
+    Num_shifts = cfg_samp.get_sampled_value('SN')
+    shift_dura = cfg_samp.get_sampled_value('Sdur')
+    targ_pvol = cfg_samp.get_sampled_value('PVol_targ')
+
+    load_per_trip = cfg_samp.get_sampled_value('LO')
+
+    choice = cfg_samp.get_sampled_value('scheduler_choice')
+    epsilon = cfg_samp.get_sampled_value('epsilon')
+
+    r_optimal = (1 - epsilon) / epsilon
+
+# Initial load of configuration
+load_config(config_file_path)
 
 file_path = 'envDes_shrd.csv'
 RL_sched = True # initializing the flag
 def_schdlr_choice = None
-
-choice = cfg_samp.get_sampled_value('scheduler_choice')
-epsilon = cfg_samp.get_sampled_value('epsilon')
-
-r_optimal = (1-epsilon)/epsilon #used for calculating waste trip balance
 
 xs_init = 450  # x init value of shovel queue
 xd_init = 100  # x init value of dump queue
@@ -1397,9 +1407,14 @@ class KPICalculator(sim.Component):
 #
 #
 
-def runDes(fsim=True, flag_RL_sched=True, fdef_schdlr_choice = None):
+def runDes(fsim=True, flag_RL_sched=True, fdef_schdlr_choice=None, config_file=None):
 
     global env, shovels, truck, dumps, crushers, shovel_idle_times, shovel_last_check, shovel_animations, RL_sched, def_schdlr_choice
+    global config_file_path
+    
+    if config_file is not None:
+        config_file_path = config_file
+        load_config(config_file_path)
 
     global all_trk_shv_dec  # Make sure to include this global
     # Clear the deque at the beginning of each episode
