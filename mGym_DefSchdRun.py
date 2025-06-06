@@ -41,21 +41,23 @@ def gen_seed(iteration, initial_seed=None, ax=1664525, cx=1013904223, mx=2**32):
 parser = argparse.ArgumentParser(description="Run the simulation with specified number of iterations and algorithm choice.")
 parser.add_argument('--num_episodes', type=int, default=10, help="Number of episodes to run the simulation")
 parser.add_argument('--algo_choice', type=int, required=True, help="Choice of scheduling algorithm (integer only)")
+parser.add_argument('--config', type=str, default='config_extend.txt', help="Path to configuration file")
 
 args = parser.parse_args()
 
 # Get the number of iterations and algorithm choice from command line arguments
 iter = args.num_episodes
 algo_choice = args.algo_choice
+config_path = args.config
 
 # Array to store KPI values for each iteration
 arr = []
 
 # Run the simulation for the specified number of iterations
 for epsd in range(iter):
- 
+
     # Run the simulation with the specified parameters
-    kpi_01 = denv.runDes(fsim=False, flag_RL_sched=False, fdef_schdlr_choice=algo_choice)
+    kpi_01 = denv.runDes(fsim=False, flag_RL_sched=False, fdef_schdlr_choice=algo_choice, config_file=config_path)
     print(f"Value of KPI01-PVol: {kpi_01}")
     # Append the result to the list
     arr.append(kpi_01)

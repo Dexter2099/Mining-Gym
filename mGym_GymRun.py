@@ -18,12 +18,13 @@ from typing import Optional
 
 # Will be set in main()
 
-def register_minegym():
+def register_minegym(config_file: str = 'config_extend.txt'):
     """Register the Minegym environment with Gymnasium."""
     try:
         register(
             id='Minegym-v0',
             entry_point='mGym_GymEnv:Minegym',
+            kwargs={'config_file': config_file}
         )
         print("Environment registered successfully!")
     except Exception as e:
@@ -139,7 +140,7 @@ class TrainingLoggerCallback(BaseCallback):
         if hasattr(self, 'log_file_handle'):
             self.log_file_handle.close()
 
-def main(choice, num_episodes, model_path=None):
+def main(choice, num_episodes, model_path=None, config_file='config_extend.txt'):
     """
     Main function to either train a new model or play with an existing one.
     
@@ -156,8 +157,8 @@ def main(choice, num_episodes, model_path=None):
         MODEL_SAVE_DIR = f"saved_models_{timestamp}"
         os.makedirs(MODEL_SAVE_DIR, exist_ok=True)
         print(f"Created model directory: {MODEL_SAVE_DIR}")
-    register_minegym()
-    env = gym.make("Minegym-v0", render_mode="console")
+    register_minegym(config_file)
+    env = gym.make("Minegym-v0", render_mode="console", config_file=config_file)
 
     if choice == 'train':
         # Initialize the PPO model with the same hyperparameters
@@ -245,7 +246,13 @@ if __name__ == "__main__":
         '--model_path',
         type=str,
         help="Path to the pre-trained model for playing. Required for 'play'."
-)
-    
+    )
+    parser.add_argument(
+        '--config',
+        type=str,
+        default='config_extend.txt',
+        help='Path to configuration file'
+    )
+
     args = parser.parse_args()
-    main(args.choice, args.num_episodes, args.model_path)
+    main(args.choice, args.num_episodes, args.model_path, args.config)

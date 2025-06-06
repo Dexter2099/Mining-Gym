@@ -23,13 +23,14 @@ from gymnasium.envs.registration import register
 class Minegym(Env):
     metadata = {"render_modes": ["console"]}
 
-    def __init__(self, render_mode="console"):
+    def __init__(self, render_mode="console", config_file="config_extend.txt"):
         super(Minegym, self).__init__()
 
         self.render_mode = render_mode
+        self.config_file = config_file
 
         # Load configuration values
-        cfg_samplr = ConfigSampler('config_extend.txt')  # Load from configuration file.** NO seed needed since no distribution sample
+        cfg_samplr = ConfigSampler(self.config_file)  # Load from configuration file.** NO seed needed since no distribution sample
         #cfg_samplr = ConfigSampler('config_extend.txt', time_scale=5.0)
         self.NumTrucks = cfg_samplr.get_sampled_value('TR')
         self.NumShovels = cfg_samplr.get_sampled_value('SH')
@@ -125,7 +126,7 @@ class Minegym(Env):
 
                 # Start a new DES process
                 print(f"Starting a new DES process with fsim: {fsim}")
-                self.des_process = multiprocessing.Process(target=des_main, args=(fsim,))
+                self.des_process = multiprocessing.Process(target=des_main, args=(fsim,), kwargs={'config_file': self.config_file})
                 self.des_process.start()
                 print("DES process started.")
 
