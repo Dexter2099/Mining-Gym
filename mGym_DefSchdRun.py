@@ -9,6 +9,7 @@ import json
 import os
 import random
 import sys
+from tqdm import tqdm
 
 
 
@@ -54,7 +55,7 @@ config_path = args.config
 arr = []
 
 # Run the simulation for the specified number of iterations
-for epsd in range(iter):
+for epsd in tqdm(range(iter), desc="Episodes", unit="episode"):
 
     # Run the simulation with the specified parameters
     kpi_01 = denv.runDes(fsim=False, flag_RL_sched=False, fdef_schdlr_choice=algo_choice, config_file=config_path)

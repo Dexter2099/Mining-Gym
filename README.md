@@ -40,4 +40,7 @@ Example: `python mGym_DefSchdRun.py --num_episodes 5 --algo_choice 1 --config my
 6. **To change configuration data:**
 You can modify the simulation settings by editing the config.extend.txt file or another file provided via `--config`. This allows you to adjust parameters such as environment details, scheduler settings, and other simulation-related options.
 
+7. **Progress Bars**
+Both training (`mGym_GymRun.py`) and classical scheduler runs (`mGym_DefSchdRun.py`) display an episode progress bar powered by `tqdm`. The package is already listed in `environment.yml`.
+
 
