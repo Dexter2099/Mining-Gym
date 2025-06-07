@@ -162,25 +162,27 @@ def calculate_shovel_imbalance(shovels):
 
 
 
-def scheduler_assign(choice, truck_id=None):
-    '''
-    Reads user choice of scheduler and queries it
-    '''
-    def_scheduler = sch.DefaultScheduler() #instance of default scheduler class
-   
+def scheduler_assign(choice, truck_id=None, rsd=None, fxctr=0):
+    """Query the selected scheduler and return the chosen shovel resource."""
+    # Provide defaults if none are supplied
+    if rsd is None:
+        rsd = int(time.time() * 1000) % 4294967296
+
+    def_scheduler = sch.DefaultScheduler()  # instance of default scheduler class
+
     if choice == 1:
         # Random Scheduler
         scheduled_equip = def_scheduler.random_sel(shovels)
     elif choice == 2:
         # Fixed Scheduler
-        scheduled_equip = def_scheduler.fixed(truck_id,Num_trucks, shovels)
+        shv_id = def_scheduler.fixed(Num_trucks, Num_shovels, rsd, fxctr, truck_id=truck_id)
+        scheduled_equip = get_shovel_from_integer(shovels, shv_id - 1) if shv_id else None
     elif choice == 3:
         # Shortest Queue
         scheduled_equip = def_scheduler.shortest_queue(shovels)
     else:
         raise ValueError("Choice must be between 1 and 4")
-     
-    # Return the updated values of all variables
+
     return scheduled_equip
 
 
