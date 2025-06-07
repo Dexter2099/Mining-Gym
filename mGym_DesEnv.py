@@ -14,7 +14,6 @@ import time
 import re
 import json
 import scheduler as sch 
-import kpi_calc as kcal
 from read_config import ConfigSampler
 import threading
 import tempfile
