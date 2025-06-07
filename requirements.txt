@@ -1,0 +1,7 @@
+# Core dependencies for Mining-Gym
+gymnasium
+stable-baselines3
+tqdm
+numpy
+tensorboard
+salabim
