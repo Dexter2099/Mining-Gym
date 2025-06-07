@@ -95,3 +95,17 @@ schedulers by filling out a few fields and clicking the corresponding
 button. Training or simulation output is printed to the console.
 
 
+
+## Research
+
+This repository implements concepts from the open-access paper ["Mining-Gym: A Configurable RL Benchmarking Environment for Truck Dispatch Scheduling"](https://doi.org/10.48550/arXiv.2503.19195). The environment and experiments closely follow the approach presented in that work.
+
+## Prompt Engineering
+
+This program was created completely through prompt engineering with ChatGPT Codex. The project evolved from a series of iterative prompts, including:
+
+- Requesting a high-level design for a reinforcement learning environment to dispatch trucks in an open-pit mine.
+- Generating the Python modules for the environment using the OpenAI Gym API.
+- Adding rule-based scheduler implementations and configuration files.
+- Writing training and inference scripts, along with a simple GUI for experimentation.
+
