@@ -21,11 +21,14 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+The `requirements.txt` file lists the essential Python packages such as
+`gymnasium`, `stable-baselines3`, `tqdm`, `numpy`, `tensorboard`, and `salabim`.
 
-If you prefer using conda, `environment.yml` provides the same packages and can be used instead:
+Conda users can optionally use `environment.yml`, which contains the same
+dependencies:
 ```bash
 conda env create -f environment.yml
-conda activate base
+conda activate mgym
 ```
 
 2. **To train a new RL policy network, run:**  
