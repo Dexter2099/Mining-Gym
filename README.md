@@ -66,4 +66,16 @@ Both training (`mGym_GymRun.py`) and classical scheduler runs (`mGym_DefSchdRun.
 To view the environment in graphical "human" mode, add `--render human` when running `mGym_GymRun.py`:
 `python mGym_GymRun.py play --num_episodes 1 --model_path <path_to_saved_model.zip> --render human`
 
+## Simple GUI
+
+For quick experimentation without command-line arguments, run the GUI:
+
+```bash
+python mgym_gui.py
+```
+
+The interface lets you train or play an RL model and run the classical
+schedulers by filling out a few fields and clicking the corresponding
+button. Training or simulation output is printed to the console.
+
 
