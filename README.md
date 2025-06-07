@@ -10,12 +10,23 @@ Mining-Gym is an open-source, configurable benchmarking environment for optimizi
 - `mgym_DesEnv.py`: Script for the DES-based Mining Site Simulator.
 - `scheduler.py`: Contains definitions for rule-based scheduling algorithms.
 - `config_extend.txt`: Configuration file where you can customize simulation settings.
-- `environment.yml`: Conda environment setup file to ensure reproducibility.
+- `requirements.txt`: Pip requirements file with the core dependencies.
+- `environment.yml`: Optional conda environment file containing the same packages.
   
 ## Setup Instructions
 
-1. **Create and activate the virtual environment:**  
-conda env create -f environment.yml  
+1. **Create and activate the virtual environment:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+If you prefer using conda, `environment.yml` provides the same packages and can be used instead:
+```bash
+conda env create -f environment.yml
+conda activate base
+```
 
 2. **To train a new RL policy network, run:**  
 python mgym_GymRun.py train --num_episodes 10  
@@ -41,6 +52,6 @@ Example: `python mGym_DefSchdRun.py --num_episodes 5 --algo_choice 1 --config my
 You can modify the simulation settings by editing the config.extend.txt file or another file provided via `--config`. This allows you to adjust parameters such as environment details, scheduler settings, and other simulation-related options.
 
 7. **Progress Bars**
-Both training (`mGym_GymRun.py`) and classical scheduler runs (`mGym_DefSchdRun.py`) display an episode progress bar powered by `tqdm`. The package is already listed in `environment.yml`.
+Both training (`mGym_GymRun.py`) and classical scheduler runs (`mGym_DefSchdRun.py`) display an episode progress bar powered by `tqdm`. The package is included in `requirements.txt` (and in `environment.yml` for conda users).
 
 
