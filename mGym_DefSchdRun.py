@@ -47,42 +47,47 @@ def gen_seed(iteration, initial_seed=None, ax=1664525, cx=1013904223, mx=2**32):
 
 
 
-# Set up argparse to parse command-line arguments
-parser = argparse.ArgumentParser(description="Run the simulation with specified number of iterations and algorithm choice.")
-parser.add_argument('--num_episodes', type=int, default=10, help="Number of episodes to run the simulation")
-parser.add_argument('--algo_choice', type=int, required=True, help="Choice of scheduling algorithm (integer only)")
-parser.add_argument('--config', type=str, default='config_extend.txt', help="Path to configuration file")
+def main(num_episodes=10, algo_choice=1, config='config_extend.txt'):
+    """Run the discrete-event simulation with a chosen scheduler."""
 
-args = parser.parse_args()
+    arr = []
+    for epsd in tqdm(range(num_episodes), desc="Episodes", unit="episode"):
+        kpi_01 = denv.runDes(
+            fsim=False,
+            flag_RL_sched=False,
+            fdef_schdlr_choice=algo_choice,
+            config_file=config,
+        )
+        print(f"Value of KPI01-PVol: {kpi_01}")
+        arr.append(kpi_01)
 
-# Get the number of iterations and algorithm choice from command line arguments
-iter = args.num_episodes
-algo_choice = args.algo_choice
-config_path = args.config
+    mean_kpi01 = np.mean(arr)
+    print(f"Average KPI01-PVol: {mean_kpi01}, over {num_episodes} repeats")
 
-# Array to store KPI values for each iteration
-arr = []
+    fil_name = f"SchdSchm{algo_choice}_Pvol.csv"
+    with open(fil_name, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Episodes", "KPI0_PVol"])
+        for idx, value in enumerate(arr, 1):
+            writer.writerow([idx, value])
 
-# Run the simulation for the specified number of iterations
-for epsd in tqdm(range(iter), desc="Episodes", unit="episode"):
+    return mean_kpi01
 
-    # Run the simulation with the specified parameters
-    kpi_01 = denv.runDes(fsim=False, flag_RL_sched=False, fdef_schdlr_choice=algo_choice, config_file=config_path)
-    print(f"Value of KPI01-PVol: {kpi_01}")
-    # Append the result to the list
-    arr.append(kpi_01)
 
-# Calculate the average KPI value
-mean_kpi01 = np.mean(arr)
-print(f"Average KPI01-PVol: {mean_kpi01}, over {iter} repeats")
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Run the simulation with specified number of iterations and algorithm choice."
+    )
+    parser.add_argument(
+        "--num_episodes", type=int, default=10, help="Number of episodes to run the simulation"
+    )
+    parser.add_argument(
+        "--algo_choice", type=int, required=True, help="Choice of scheduling algorithm (integer only)"
+    )
+    parser.add_argument(
+        "--config", type=str, default="config_extend.txt", help="Path to configuration file"
+    )
 
-# Save the array as a CSV file
-fil_name = f"SchdSchm{algo_choice}_Pvol.csv"
-
-# Write the data to CSV
-with open(fil_name, mode='w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(["Episodes", "KPI0_PVol"])  # Writing the header
-    for idx, value in enumerate(arr, 1):
-        writer.writerow([idx, value])
+    args = parser.parse_args()
+    main(args.num_episodes, args.algo_choice, args.config)
 
