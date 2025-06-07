@@ -42,6 +42,11 @@ python mgym_DefSchdRun.py --num_episodes 10 --algo_choice 1
 --algo_choice: Selects the scheduler algorithm as defined in scheduler.py.
 Example: 1 stands for random scheduling.
 
+Supported classical scheduler choices (see `scheduler.py` for details):
+- `1` – random scheduler
+- `2` – fixed allocation
+- `3` – shortest queue
+
 4. **To play using a pretrained model, run:**
 python mgym_GymRun.py play --num_episodes 5 --model_path <path_to_saved_model.zip>
 Replace <path_to_saved_model.zip> with the actual path to your saved model.
