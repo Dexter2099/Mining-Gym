@@ -1,21 +1,30 @@
 '''
 Main script for training and playing RL-based scheduling agents.
 '''
-import gymnasium as gym
-import random
-import time
-import numpy as np
-import os
-import csv
-import tensorboard
-import argparse
-from tqdm import tqdm
-from stable_baselines3 import PPO
-from stable_baselines3.common.callbacks import BaseCallback
-from stable_baselines3.common.vec_env import DummyVecEnv
-from gymnasium.envs.registration import register
-from datetime import datetime
-from typing import Optional
+
+try:
+    import gymnasium as gym
+    import random
+    import time
+    import numpy as np
+    import os
+    import csv
+    import tensorboard
+    import argparse
+    from tqdm import tqdm
+    from stable_baselines3 import PPO
+    from stable_baselines3.common.callbacks import BaseCallback
+    from stable_baselines3.common.vec_env import DummyVecEnv
+    from gymnasium.envs.registration import register
+    from datetime import datetime
+    from typing import Optional
+except ImportError as e:
+    print(
+        f"ImportError: {e}.\n"
+        "Please install the required dependencies with 'pip install -r requirements.txt' "
+        "or activate the provided conda environment."
+    )
+    raise
 
 # Will be set in main()
 

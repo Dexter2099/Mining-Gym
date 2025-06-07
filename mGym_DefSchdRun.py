@@ -1,15 +1,24 @@
 '''
 Script to run classical/rule-based schedulers.
 '''
-import argparse
-import mGym_DesEnv as denv
-import numpy as np
-import csv
-import json
-import os
-import random
-import sys
-from tqdm import tqdm
+
+try:
+    import argparse
+    import mGym_DesEnv as denv
+    import numpy as np
+    import csv
+    import json
+    import os
+    import random
+    import sys
+    from tqdm import tqdm
+except ImportError as e:
+    print(
+        f"ImportError: {e}.\n"
+        "Please install the required dependencies with 'pip install -r requirements.txt' "
+        "or activate the provided conda environment."
+    )
+    raise
 
 
 
