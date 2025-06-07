@@ -54,4 +54,8 @@ You can modify the simulation settings by editing the config.extend.txt file or 
 7. **Progress Bars**
 Both training (`mGym_GymRun.py`) and classical scheduler runs (`mGym_DefSchdRun.py`) display an episode progress bar powered by `tqdm`. The package is included in `requirements.txt` (and in `environment.yml` for conda users).
 
+8. **Human Rendering (optional)**
+To view the environment in graphical "human" mode, add `--render human` when running `mGym_GymRun.py`:
+`python mGym_GymRun.py play --num_episodes 1 --model_path <path_to_saved_model.zip> --render human`
+
 

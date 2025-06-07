@@ -145,7 +145,7 @@ class TrainingLoggerCallback(BaseCallback):
         if hasattr(self, 'log_file_handle'):
             self.log_file_handle.close()
 
-def main(choice, num_episodes, model_path=None, config_file='config_extend.txt'):
+def main(choice, num_episodes, model_path=None, config_file='config_extend.txt', render_mode='console'):
     """
     Main function to either train a new model or play with an existing one.
     
@@ -163,7 +163,7 @@ def main(choice, num_episodes, model_path=None, config_file='config_extend.txt')
         os.makedirs(MODEL_SAVE_DIR, exist_ok=True)
         print(f"Created model directory: {MODEL_SAVE_DIR}")
     register_minegym(config_file)
-    env = gym.make("Minegym-v0", render_mode="console", config_file=config_file)
+    env = gym.make("Minegym-v0", render_mode=render_mode, config_file=config_file)
 
     if choice == 'train':
         # Initialize the PPO model with the same hyperparameters
@@ -257,6 +257,12 @@ if __name__ == "__main__":
         default='config_extend.txt',
         help='Path to configuration file'
     )
+    parser.add_argument(
+        '--render',
+        type=str,
+        default='console',
+        help="Render mode to pass to gym.make (e.g., 'human' or 'console')."
+    )
 
     args = parser.parse_args()
-    main(args.choice, args.num_episodes, args.model_path, args.config)
+    main(args.choice, args.num_episodes, args.model_path, args.config, args.render)
