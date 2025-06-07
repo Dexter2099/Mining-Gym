@@ -1,6 +1,22 @@
 # Mining-Gym
 Mining-Gym is an open-source, configurable benchmarking environment for optimizing truck dispatch scheduling in open-pit mining using Reinforcement Learning.
 
+## Experiment Program Explained
+
+**Why was this written?**  
+Open-pit mines operate massive truck fleets to move material between shovels, crushers and dumps. Manually dispatching these trucks, or relying on rigid rules, wastes fuel and time—especially when equipment breaks down or queues build up. Reinforcement Learning (RL) could learn smarter schedules, but researchers lacked a standard, realistic simulator for fair comparisons. Mining-Gym fills that gap.
+
+**What exactly is Mining-Gym?**  
+Mining-Gym packages a discrete-event mine simulator behind the familiar OpenAI Gym API. You can swap between classical dispatch algorithms and RL agents while using the same configuration files. Everything runs locally with minimal setup, so experimentation is as simple as calling a training script.
+
+**How does RL "see" the mine?**  
+The environment converts the state of trucks, shovels, crushers and stockpiles into an observation vector. At each step the agent chooses where a truck should go next. Rewards reflect haulage efficiency and downtime, guiding the RL policy toward efficient dispatching.
+
+**What did they test?**  
+The initial experiments compared rule-based schedules against RL agents across different mine layouts. Metrics such as throughput and queue time were used to evaluate how quickly RL policies adapt when trucks break down or resources become congested.
+
+Bottom line: Mining-Gym turns a messy industrial problem into an RL playground you can run on a laptop. If you can train CartPole, you’re two commands away from optimising million-dollar mining fleets.
+
 
 ## Repository Files
 
