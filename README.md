@@ -74,6 +74,13 @@ Both training and classical runs display progress bars via `tqdm`.
 
 This repository implements concepts from the open-access paper ["Mining-Gym: A Configurable RL Benchmarking Environment for Truck Dispatch Scheduling"](https://doi.org/10.48550/arXiv.2503.19195). The environment and experiments closely follow the approach presented in that work.
 
+## Attribution
+
+This prompt engineering project is adapted from [CBCodeHub/Mining-Gym](https://github.com/CBCodeHub/Mining-Gym).
+
+All original credit goes to the authors of the original work. This repo includes modifications and extensions for research and educational purposes.
+
+
 ## Prompt Engineering
 
 This program was created completely through prompt engineering with ChatGPT Codex. The project evolved from a series of iterative prompts, including:
