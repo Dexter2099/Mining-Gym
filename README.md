@@ -78,7 +78,7 @@ This repository implements concepts from the open-access paper ["Mining-Gym: A C
 
 This prompt engineering project is adapted from [CBCodeHub/Mining-Gym](https://github.com/CBCodeHub/Mining-Gym).
 
-All original credit goes to the authors of the original work. This repo includes modifications and extensions for research and educational purposes.
+All original credit goes to the authors of the original work. This repo was built from the ground up using prompts for research and educational purposes.
 
 
 ## Prompt Engineering
