@@ -1,5 +1,5 @@
-# Mining-Gym
-Mining-Gym is a configurable benchmarking environment for optimizing truck dispatch scheduling in open-pit mining using Reinforcement Learning.
+# Open Pit Mining Gym
+Open Pit Mining Gym is a configurable benchmarking environment for optimizing truck dispatch scheduling in open-pit mining using Reinforcement Learning.
 
 ## About
 
